@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MEB Görevde Yükselme</title>
+    <!-- PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo">MEB GYS Asistan</div>
+            <div class="mode-badge">2026 Hazırlık</div>
+        </header>
+
+        <!-- START SCREEN -->
+        <div id="login-screen" class="screen">
+            <div class="card question-card login-container">
+                <h2 style="margin-bottom: 30px;">Giriş Yap</h2>
+                <input type="password" id="password-input" class="login-input" placeholder="Şifrenizi Girin">
+                <button id="btn-login" class="btn btn-primary" style="width: 100%;">Giriş</button>
+                <p id="login-error" style="color:#ef4444; margin-top:10px; display:none;">Hatalı Şifre!</p>
+            </div>
+        </div>
+
+        <div id="start-screen" class="screen hidden">
+            <div class="card question-card" style="text-align:center; padding: 40px 20px;">
+                <h2 style="margin-bottom: 20px; font-size: 1.8rem;">Deneme Sınavı</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 30px;">
+                    Mevcut yönetmeliğe uygun 60 adet sorudan oluşan deneme sınavını başlatmak için butona dokunun.
+                </p>
+
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button id="btn-start-exam" class="btn btn-primary" style="width: 100%;">Sınavı Başlat</button>
+                    <button id="btn-stats" class="btn btn-secondary" style="width: 100%;">📊 İlerleme Durumu</button>
+                </div>
+
+                <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <p style="font-size: 0.8rem; color: #64748b;">
+                        Son Güncelleme: 07 Şubat 2026 Mevzuatı
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS SCREEN -->
+        <div id="stats-screen" class="screen hidden">
+            <div class="card question-card">
+                <h2>Gelişim Raporu</h2>
+                <div class="stats-summary">
+                    <div class="stat-box">
+                        <div class="stat-val" id="stat-total-solved">0</div>
+                        <div class="stat-label">Çözülen Soru</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val" id="stat-success-rate">%0</div>
+                        <div class="stat-label">Başarı Oranı</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:20px; font-size:1rem;">Konu Analizi</h3>
+                <div id="stats-container" class="stats-list">
+                    <!-- JS will fill -->
+                    <p style="color:var(--text-secondary); text-align:center;">Henüz veri yok.</p>
+                </div>
+
+                <button id="btn-back-home" class="btn btn-secondary" style="width:100%; margin-top:20px;">Ana
+                    Menü</button>
+            </div>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="screen hidden">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 0 10px;">
+                <div class="timer" id="timer">00:00</div>
+                <div style="color: var(--text-secondary);">
+                    <span id="q-current">1</span> / <span id="q-total">60</span>
+                </div>
+            </div>
+
+            <div id="question-container" class="question-card">
+                <!-- Content injected via JS -->
+            </div>
+
+            <div class="nav-buttons">
+                <button id="btn-prev" class="btn btn-secondary" style="display: none;">Önceki Soru</button>
+                <div style="flex:1"></div> <!-- Spacer -->
+                <button id="btn-next" class="btn btn-primary" style="display: none;">Sonraki Soru</button>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="screen hidden">
+            <div class="question-card results-card">
+                <div class="score-circle">
+                    <span class="score-text" id="res-score">0</span>
+                </div>
+                <h3>Sınav Tamamlandı!</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 30px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: #4ade80;" id="res-correct">0</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8;">Doğru</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: #f87171;" id="res-wrong">0</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8;">Yanlış</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; color: #cbd5e1;" id="res-empty">0</div>
+                        <div style="font-size: 0.8rem; color: #94a3b8;">Boş</div>
+                    </div>
+                </div>
+
+                <button id="btn-restart" class="btn btn-primary" style="width: 100%; margin-top: 40px;">Tekrar
+                    Dene</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MASTERY PROGRESS BAR (FIXED BOTTOM) -->
+    <div id="mastery-bar-container" class="mastery-container">
+        <div class="mastery-top-row">
+            <div class="mastery-label">Havuzun <span id="mastery-percent">%0</span>'ı Tamamlandı</div>
+            <div class="music-controls">
+                <button id="btn-music-prev" class="btn-music">⏮</button>
+                <button id="btn-music-play" class="btn-music">▶</button>
+                <button id="btn-music-next" class="btn-music">⏭</button>
+                <div id="music-equalizer" class="equalizer paused">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </div>
+        <div class="mastery-track">
+            <div id="mastery-fill" class="mastery-fill" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <!-- Sources will be set by JS -->
+    </audio>
+
+    <!-- PREMIUM FOOTER -->
+    <div class="app-footer">
+        <div class="footer-content signature-text">
+            Meb - Erdal Çakır - Programcı
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data/questions.js"></script>
+    <script src="data/motivation.js"></script>
+    <script src="assets/topics.js"></script>
+    <script src="assets/app.js"></script>
+</body>
+
+</html>

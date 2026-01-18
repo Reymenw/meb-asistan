@@ -1,0 +1,675 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #3b82f6;
+    --success-color: #22c55e;
+    --error-color: #ef4444;
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.mode-badge {
+    padding: 6px 12px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    border: 1px solid var(--glass-border);
+}
+
+/* Exam Card */
+.question-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.timer {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-color);
+}
+
+.question-text {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* Options */
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    padding: 16px 20px;
+    border-radius: 16px;
+    color: var(--text-primary);
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.option-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.option-btn.selected {
+    border-color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.1);
+}
+
+/* Correct/Wrong States */
+.option-btn.correct {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: var(--success-color);
+    color: #4ade80;
+}
+
+.option-btn.wrong {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--error-color);
+    color: #f87171;
+}
+
+/* Option Prefix (A, B, C...) */
+.opt-prefix {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.option-btn.correct .opt-prefix {
+    background: var(--success-color);
+    color: white;
+}
+
+.option-btn.wrong .opt-prefix {
+    background: var(--error-color);
+    color: white;
+}
+
+/* Navigation */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+/* Score Board (Results) */
+.results-card {
+    text-align: center;
+    padding: 40px;
+}
+
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(var(--success-color) 0%, var(--success-color) var(--percentage), rgba(255, 255, 255, 0.1) var(--percentage), rgba(255, 255, 255, 0.1) 100%);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.score-circle::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: #1e293b;
+    border-radius: 50%;
+}
+
+.score-text {
+    position: relative;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.hidden {
+    display: none;
+}
+
+/* --- Premium Footer --- */
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+/* Moving gradient border line at top */
+.app-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #3b82f6, #f472b6, transparent);
+    animation: border-flow 3s linear infinite;
+}
+
+@keyframes border-flow {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.glow-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow:
+        0 0 10px rgba(59, 130, 246, 0.8),
+        0 0 20px rgba(59, 130, 246, 0.4);
+    animation: text-pulse 3s infinite alternate;
+}
+
+.role-badge {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+@keyframes text-pulse {
+    0% {
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+    }
+
+    100% {
+        text-shadow: 0 0 15px rgba(236, 72, 153, 0.8), 0 0 30px rgba(236, 72, 153, 0.4);
+    }
+}
+
+/* Adjust main container to prevent cover */
+.container {
+    padding-bottom: 90px;
+}
+
+/* --- Signature Footer Overrides --- */
+.signature-text {
+    font-family: 'Dancing Script', cursive !important;
+    font-size: 1.8rem !important;
+    font-weight: 700;
+    background: linear-gradient(to right, #60a5fa, #f472b6, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+    animation: flow-text 5s infinite;
+}
+
+@keyframes flow-text {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* --- Login Screen --- */
+.login-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.login-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.login-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+/* --- Explanation Box --- */
+.explanation-box {
+    margin-top: 25px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    border-left: 4px solid var(--accent-color);
+    animation: fadeIn 0.5s ease;
+}
+
+.explanation-title {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.explanation-text {
+    font-size: 1rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+/* Audio Button */
+.btn-audio {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--accent-color);
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+
+.btn-audio:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Stats Screen --- */
+.stats-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-val {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.stats-list {
+    margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.stat-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin: 0 15px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #22c55e);
+    border-radius: 4px;
+}
+
+/* --- Mastery Bar (Fixed Bottom) --- */
+.mastery-container {
+    position: fixed;
+    bottom: 50px;
+    /* Just above the footer (approx) */
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 999;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mastery-label {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.mastery-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.mastery-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f472b6, #a78bfa);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+    transition: width 0.5s ease-out;
+}
+
+/* Adjust footer to not overlap content too much if needed, 
+   but container padding-bottom handles main content. 
+   We just need to make sure this bar sits nicely. 
+   Footer height is usually around 50px + padding. 
+   Let's adjust .app-footer z-index to be above or below? 
+   Footer is z-index 1000. This should be 999. 
+   Bottom 0 is footer. Footer height is auto.
+   Let's push it up a bit. */
+.app-footer {
+    z-index: 1001;
+    /* Footer on top */
+}
+
+.mastery-container {
+    bottom: 0;
+    padding-bottom: 60px;
+    /* Space for footer */
+    pointer-events: none;
+    /* Let clicks pass through if needed, mainly visualize */
+}
+
+/* Music Controls & Mastery Bar Updates */
+.mastery-container {
+    pointer-events: auto !important;
+    /* Enable clicks for music controls */
+}
+
+.mastery-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-music {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--accent-color);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-music:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.btn-music:active {
+    transform: scale(0.95);
+}
+
+/* Equalizer Animation */
+.equalizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 16px;
+}
+
+.equalizer span {
+    width: 3px;
+    background: linear-gradient(to top, #f472b6, #a78bfa);
+    border-radius: 2px;
+    animation: eq-bounce 0.8s ease-in-out infinite;
+}
+
+.equalizer span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.equalizer span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.equalizer span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.equalizer.paused span {
+    animation: none;
+    height: 4px;
+}
+
+@keyframes eq-bounce {
+
+    0%,
+    100% {
+        height: 4px;
+    }
+
+    50% {
+        height: 16px;
+    }
+}
+
+/* Motivation Card */
+.motivation-card {
+    text-align: center;
+    padding: 60px 30px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.motivation-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+.motivation-text {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
