@@ -1,175 +1,98 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MEB Görevde Yükselme</title>
-    <!-- PWA -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="assets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEB Sınav Notları</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2em;
+        }
+        .menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .menu-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .menu-card h2 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        .menu-card p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            .menu {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-
 <body>
     <div class="container">
-
-        <!-- HEADER -->
-        <header>
-            <div class="logo">MEB GYS Asistan</div>
-            <div class="mode-badge">2026 Hazırlık</div>
-        </header>
-
-        <!-- START SCREEN -->
-        <div id="login-screen" class="screen">
-            <div class="card question-card login-container">
-                <h2 style="margin-bottom: 30px;">Giriş Yap</h2>
-                <input type="password" id="password-input" class="login-input" placeholder="Şifrenizi Girin">
-                <button id="btn-login" class="btn btn-primary" style="width: 100%;">Giriş</button>
-                <p id="login-error" style="color:#ef4444; margin-top:10px; display:none;">Hatalı Şifre!</p>
-            </div>
-        </div>
-
-        <div id="start-screen" class="screen hidden">
-            <div class="card question-card" style="text-align:center; padding: 40px 20px;">
-                <h2 style="margin-bottom: 20px; font-size: 1.8rem;">Deneme Sınavı</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 30px;">
-                    Mevcut yönetmeliğe uygun 60 adet sorudan oluşan deneme sınavını başlatmak için butona dokunun.
-                </p>
-
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button id="btn-start-exam" class="btn btn-primary" style="width: 100%;">Sınavı Başlat</button>
-                    <button id="btn-stats" class="btn btn-secondary" style="width: 100%;">📊 İlerleme Durumu</button>
-                </div>
-
-                <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                    <p style="font-size: 0.8rem; color: #64748b;">
-                        Son Güncelleme: 07 Şubat 2026 Mevzuatı
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- STATS SCREEN -->
-        <div id="stats-screen" class="screen hidden">
-            <div class="card question-card">
-                <h2>Gelişim Raporu</h2>
-                <div class="stats-summary">
-                    <div class="stat-box">
-                        <div class="stat-val" id="stat-total-solved">0</div>
-                        <div class="stat-label">Çözülen Soru</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-val" id="stat-success-rate">%0</div>
-                        <div class="stat-label">Başarı Oranı</div>
-                    </div>
-                </div>
-
-                <h3 style="margin-top:20px; font-size:1rem;">Konu Analizi</h3>
-                <div id="stats-container" class="stats-list">
-                    <!-- JS will fill -->
-                    <p style="color:var(--text-secondary); text-align:center;">Henüz veri yok.</p>
-                </div>
-
-                <button id="btn-back-home" class="btn btn-secondary" style="width:100%; margin-top:20px;">Ana
-                    Menü</button>
-            </div>
-        </div>
-
-        <!-- QUIZ SCREEN -->
-        <div id="quiz-screen" class="screen hidden">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 0 10px;">
-                <div class="timer" id="timer">00:00</div>
-                <div style="color: var(--text-secondary);">
-                    <span id="q-current">1</span> / <span id="q-total">60</span>
-                </div>
-            </div>
-
-            <div id="question-container" class="question-card">
-                <!-- Content injected via JS -->
-            </div>
-
-            <div class="nav-buttons">
-                <button id="btn-prev" class="btn btn-secondary" style="display: none;">Önceki Soru</button>
-                <div style="flex:1"></div> <!-- Spacer -->
-                <button id="btn-next" class="btn btn-primary" style="display: none;">Sonraki Soru</button>
-            </div>
-        </div>
-
-        <!-- RESULT SCREEN -->
-        <div id="result-screen" class="screen hidden">
-            <div class="question-card results-card">
-                <div class="score-circle">
-                    <span class="score-text" id="res-score">0</span>
-                </div>
-                <h3>Sınav Tamamlandı!</h3>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 30px;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; color: #4ade80;" id="res-correct">0</div>
-                        <div style="font-size: 0.8rem; color: #94a3b8;">Doğru</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; color: #f87171;" id="res-wrong">0</div>
-                        <div style="font-size: 0.8rem; color: #94a3b8;">Yanlış</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 1.5rem; color: #cbd5e1;" id="res-empty">0</div>
-                        <div style="font-size: 0.8rem; color: #94a3b8;">Boş</div>
-                    </div>
-                </div>
-
-                <button id="btn-restart" class="btn btn-primary" style="width: 100%; margin-top: 40px;">Tekrar
-                    Dene</button>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- MASTERY PROGRESS BAR (FIXED BOTTOM) -->
-    <div id="mastery-bar-container" class="mastery-container">
-        <div class="mastery-top-row">
-            <div class="mastery-label">Havuzun <span id="mastery-percent">%0</span>'ı Tamamlandı</div>
-            <div class="music-controls">
-                <button id="btn-music-prev" class="btn-music">⏮</button>
-                <button id="btn-music-play" class="btn-music">▶</button>
-                <button id="btn-music-next" class="btn-music">⏭</button>
-                <div id="music-equalizer" class="equalizer paused">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-        </div>
-        <div class="mastery-track">
-            <div id="mastery-fill" class="mastery-fill" style="width: 0%"></div>
+        <h1>📚 MEB Görevde Yükselme Sınavı Notları</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Sınav hazırlık notlarınıza buradan erişebilirsiniz
+        </p>
+        
+        <div class="menu">
+            <a href="data/turkiye-yuzyili-maarif-modeli-1.html" class="menu-card">
+                <h2>🇹🇷 Türkiye Yüzyılı Maarif Modeli</h2>
+                <p>Detaylı notlar ve kritik bilgiler</p>
+                <span class="badge">%30 Ağırlık - EN ÖNEMLİ!</span>
+            </a>
+            
+            <a href="data/hizli-referans-1.html" class="menu-card">
+                <h2>⚡ Hızlı Referans</h2>
+                <p>Son dakika ezber notları</p>
+                <span class="badge">Tüm Konular</span>
+            </a>
         </div>
     </div>
-
-    <audio id="bg-music" loop>
-        <!-- Sources will be set by JS -->
-    </audio>
-
-    <!-- PREMIUM FOOTER -->
-    <div class="app-footer">
-        <div class="footer-content signature-text">
-            Meb - Erdal Çakır - Programcı
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="data/questions.js"></script>
-    <script src="data/motivation.js"></script>
-    <script src="assets/topics.js"></script>
-    <script src="assets/app.js"></script>
 </body>
-
 </html>
